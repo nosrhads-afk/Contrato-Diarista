@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@theme {
+  --color-nos-dark: #0B2545;
+  --color-nos-primary: #133B5C;
+  --color-nos-accent: #F26522;
+  --color-nos-accentHover: #D95213;
+  --color-nos-light: #F8FAFC;
+  --color-nos-card: #FFFFFF;
+  --color-nos-border: #E2E8F0;
+  --color-nos-muted: #64748B;
+  --color-nos-success: #10B981;
+  --color-nos-danger: #EF4444;
+
+  --shadow-card: 0 4px 20px -2px rgba(11, 37, 69, 0.08);
+  --shadow-card-hover: 0 10px 30px -4px rgba(11, 37, 69, 0.12);
+  --shadow-orange-glow: 0 4px 20px rgba(242, 101, 34, 0.35);
+}
+
+body {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* Animações e transições */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+.animate-shake {
+  animation: shake 0.3s ease-in-out forwards;
+}
+
+/* Barra de rolagem elegante para o contrato */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Otimização para Impressão de Comprovante e Dossiê (PDF) */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  header, footer, button, .print\:hidden {
+    display: none !important;
+  }
+
+  .print\:border {
+    border: 1px solid #d1d5db !important;
+  }
+
+  .print\:shadow-none {
+    box-shadow: none !important;
+  }
+}
