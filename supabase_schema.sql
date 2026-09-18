@@ -1,5 +1,5 @@
 -- ==============================================================================
--- SCRIPT DE CRIAÇÃO DE TABELA E POLÍTICAS DE SEGURANÇA (RLS) - SUPABASE
+-- SCRIPT DE CRIAÇÃO DE TABELA, STORAGE E POLÍTICAS DE SEGURANÇA (RLS) - SUPABASE
 -- Aplicação: "Aceite acordo Diarista Nos RH" - Nós RH
 -- Instruções: Copie todo este conteúdo, abra o painel do Supabase,
 -- acesse o menu "SQL Editor", cole este script e clique em "Run".
@@ -19,10 +19,16 @@ CREATE TABLE IF NOT EXISTS public.termos_aceite_diarista (
     funcao TEXT NOT NULL,
     dias_trabalho TEXT NOT NULL,
     
-    -- Evidências Jurídicas e Integridade do Contrato
-    termo_versao TEXT DEFAULT '1.0' NOT NULL,
+    -- Documento Anexado (RG ou CPF em JPG, PNG ou PDF)
+    documento_url TEXT,
+    documento_nome TEXT,
+    documento_tamanho INTEGER,
+    
+    -- Evidências Jurídicas, Consentimento LGPD e Integridade do Contrato
+    termo_versao TEXT DEFAULT '2.0' NOT NULL,
     termo_texto_integral TEXT NOT NULL,
     aceitou_termos BOOLEAN DEFAULT true NOT NULL,
+    autoriza_compartilhamento BOOLEAN DEFAULT true NOT NULL,
     codigo_autenticidade TEXT UNIQUE NOT NULL,
     
     -- Metadados de Auditoria Forense
@@ -31,6 +37,13 @@ CREATE TABLE IF NOT EXISTS public.termos_aceite_diarista (
     dispositivo_resumo TEXT,
     geolocalizacao JSONB
 );
+
+-- Garantir adição de novas colunas caso a tabela já tenha sido criada anteriormente
+ALTER TABLE public.termos_aceite_diarista 
+    ADD COLUMN IF NOT EXISTS documento_url TEXT,
+    ADD COLUMN IF NOT EXISTS documento_nome TEXT,
+    ADD COLUMN IF NOT EXISTS documento_tamanho INTEGER,
+    ADD COLUMN IF NOT EXISTS autoriza_compartilhamento BOOLEAN DEFAULT true NOT NULL;
 
 -- 2. Índices de Otimização para Consultas e Auditorias
 CREATE INDEX IF NOT EXISTS idx_termos_cpf 
@@ -69,8 +82,30 @@ FOR SELECT
 TO anon, authenticated
 USING (true);
 
--- Comentários descritivos na tabela para documentação do banco
+-- ==============================================================================
+-- 6. CONFIGURAÇÃO DO SUPABASE STORAGE (BUCKET PARA DOCUMENTOS RG/CPF)
+-- ==============================================================================
+
+-- Criação do Bucket Público para armazenamento de documentos
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('documentos-diaristas', 'documentos-diaristas', true)
+ON CONFLICT (id) DO UPDATE SET public = true;
+
+-- Permite upload anônimo de documentos (Diarista anexando RG/CPF)
+DROP POLICY IF EXISTS "Permitir upload anonimo de documentos" ON storage.objects;
+CREATE POLICY "Permitir upload anonimo de documentos"
+ON storage.objects FOR INSERT
+TO anon, authenticated
+WITH CHECK (bucket_id = 'documentos-diaristas');
+
+-- Permite leitura de documentos armazenados
+DROP POLICY IF EXISTS "Permitir leitura de documentos" ON storage.objects;
+CREATE POLICY "Permitir leitura de documentos"
+ON storage.objects FOR SELECT
+TO anon, authenticated
+USING (bucket_id = 'documentos-diaristas');
+
+-- Comentários descritivos na tabela
 COMMENT ON TABLE public.termos_aceite_diarista IS 'Registros de aceite do termo de trabalho autônomo com metadados para validade jurídica da Nós RH';
-COMMENT ON COLUMN public.termos_aceite_diarista.codigo_autenticidade IS 'Hash ou código único verificador de autenticidade do aceite';
-COMMENT ON COLUMN public.termos_aceite_diarista.termo_texto_integral IS 'Texto contratual completo congelado no momento exato da assinatura';
-COMMENT ON COLUMN public.termos_aceite_diarista.geolocalizacao IS 'Dados de geolocalização aproximada por IP e coordenadas (se autorizadas)';
+COMMENT ON COLUMN public.termos_aceite_diarista.documento_url IS 'URL pública ou de storage do documento anexado (RG ou CPF)';
+COMMENT ON COLUMN public.termos_aceite_diarista.autoriza_compartilhamento IS 'Declaração de ciência e consentimento LGPD para compartilhamento de dados com parceiros e tomadores';

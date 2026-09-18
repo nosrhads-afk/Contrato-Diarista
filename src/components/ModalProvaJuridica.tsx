@@ -10,7 +10,10 @@ import {
   Clock, 
   Monitor, 
   User, 
-  FileText 
+  FileText,
+  Paperclip,
+  Share2,
+  ExternalLink
 } from 'lucide-react';
 import type { TermoAceite } from '../types/database.types';
 
@@ -44,21 +47,21 @@ export const ModalProvaJuridica: React.FC<ModalProvaJuridicaProps> = ({ termo, o
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-nos-dark/70 backdrop-blur-sm overflow-y-auto animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-nos-dark/75 backdrop-blur-sm overflow-y-auto animate-fadeIn">
       <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-2xl max-w-3xl w-full my-8 max-h-[90vh] flex flex-col overflow-hidden">
         
-        {/* Cabeçalho do Dossiê */}
-        <div className="p-5 sm:p-6 bg-nos-dark text-white flex items-center justify-between gap-4 shrink-0">
+        {/* Cabeçalho do Dossiê com Petróleo e Turquesa */}
+        <div className="p-5 sm:p-6 bg-nos-dark text-white flex items-center justify-between gap-4 shrink-0 border-b border-nos-petroleo">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-nos-accent flex items-center justify-center shadow-orange-glow text-white">
-              <FileCheck2 className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-xl bg-nos-primary flex items-center justify-center shadow-turquesa-glow text-nos-dark">
+              <FileCheck2 className="w-5 h-5 font-bold" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-base sm:text-lg font-bold text-white leading-tight">
                   Dossiê de Prova Jurídica Forense
                 </h3>
-                <span className="bg-emerald-500/20 text-emerald-300 text-[10px] uppercase font-bold px-2 py-0.5 rounded border border-emerald-400/30">
+                <span className="bg-teal-500/20 text-teal-300 text-[10px] uppercase font-bold px-2 py-0.5 rounded border border-teal-400/30">
                   Autêntico
                 </span>
               </div>
@@ -74,7 +77,7 @@ export const ModalProvaJuridica: React.FC<ModalProvaJuridicaProps> = ({ termo, o
               title="Imprimir laudo pericial"
               className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition cursor-pointer"
             >
-              <Printer className="w-4 h-4" />
+              <Printer className="w-4 h-4 text-nos-primary" />
             </button>
             <button
               onClick={onClose}
@@ -91,8 +94,8 @@ export const ModalProvaJuridica: React.FC<ModalProvaJuridicaProps> = ({ termo, o
           {/* Seção 1: Identificação do Profissional */}
           <div className="border border-slate-200 rounded-2xl p-4 sm:p-5 bg-slate-50/50 space-y-3">
             <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-nos-primary flex items-center gap-1.5">
-                <User className="w-4 h-4 text-nos-accent" />
+              <h4 className="text-xs font-bold uppercase tracking-wider text-nos-dark flex items-center gap-1.5">
+                <User className="w-4 h-4 text-nos-primary" />
                 1. Qualificação do(a) Diarista
               </h4>
               <span className="text-[11px] font-semibold text-slate-500">
@@ -128,14 +131,71 @@ export const ModalProvaJuridica: React.FC<ModalProvaJuridicaProps> = ({ termo, o
             </div>
           </div>
 
-          {/* Seção 2: Metadados Técnicos de Integridade e Rastreabilidade */}
+          {/* Seção 2: Documento Anexado (RG ou CPF) e Autorização LGPD */}
           <div className="border border-slate-200 rounded-2xl p-4 sm:p-5 bg-slate-50/50 space-y-3">
             <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-nos-primary flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-nos-accent" />
-                2. Metadados de Autenticidade e Carimbo de Tempo
+              <h4 className="text-xs font-bold uppercase tracking-wider text-nos-dark flex items-center gap-1.5">
+                <Paperclip className="w-4 h-4 text-nos-primary" />
+                2. Documento Anexado e Consentimento de Compartilhamento
               </h4>
-              <span className="text-[11px] font-mono text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
+              <span className="text-[11px] font-semibold text-teal-800 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                Obrigatório Cumprido
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div className="p-3 bg-white rounded-xl border border-slate-200">
+                <span className="text-slate-500 block mb-1">Arquivo do Documento:</span>
+                <strong className="font-semibold text-nos-dark block truncate">
+                  {termo.documento_nome || 'Documento registrado no ato'}
+                </strong>
+                {termo.documento_tamanho && (
+                  <span className="text-[11px] text-slate-500">
+                    Tamanho: {(termo.documento_tamanho / 1024).toFixed(0)} KB
+                  </span>
+                )}
+                {termo.documento_url ? (
+                  <div className="mt-2 flex items-center gap-2">
+                    <a
+                      href={termo.documento_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-bold text-teal-700 hover:text-teal-900 underline"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      Visualizar Arquivo Anexado
+                    </a>
+                  </div>
+                ) : (
+                  <span className="text-[11px] text-slate-500 italic block mt-1">
+                    Arquivo processado e registrado junto ao formulário.
+                  </span>
+                )}
+              </div>
+
+              <div className="p-3 bg-white rounded-xl border border-slate-200 flex flex-col justify-between">
+                <div>
+                  <span className="text-slate-500 block mb-1">Autorização de Dados:</span>
+                  <div className="flex items-center gap-1.5 text-teal-800 font-semibold text-xs">
+                    <Share2 className="w-3.5 h-3.5 text-nos-primary" />
+                    <span>Compartilhamento com Parceiros Autorizado</span>
+                  </div>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-2">
+                  Em conformidade com a LGPD (Lei nº 13.709/2018) para fins de alocação de serviços.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Seção 3: Metadados Técnicos de Integridade e Rastreabilidade */}
+          <div className="border border-slate-200 rounded-2xl p-4 sm:p-5 bg-slate-50/50 space-y-3">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-nos-dark flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-nos-primary" />
+                3. Metadados de Autenticidade e Carimbo de Tempo
+              </h4>
+              <span className="text-[11px] font-mono text-teal-800 bg-teal-100 px-2 py-0.5 rounded">
                 Auditado
               </span>
             </div>
@@ -184,12 +244,12 @@ export const ModalProvaJuridica: React.FC<ModalProvaJuridicaProps> = ({ termo, o
             </div>
           </div>
 
-          {/* Seção 3: Texto Integral do Contrato no Momento do Aceite */}
+          {/* Seção 4: Texto Integral do Contrato no Momento do Aceite */}
           <div className="border border-slate-200 rounded-2xl p-4 sm:p-5 bg-slate-50/50 space-y-2">
             <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-nos-primary flex items-center gap-1.5">
-                <FileText className="w-4 h-4 text-nos-accent" />
-                3. Texto Integral do Termo Aceito (Versão {termo.termo_versao})
+              <h4 className="text-xs font-bold uppercase tracking-wider text-nos-dark flex items-center gap-1.5">
+                <FileText className="w-4 h-4 text-nos-primary" />
+                4. Texto Integral do Termo Aceito (Versão {termo.termo_versao})
               </h4>
             </div>
 
@@ -212,8 +272,8 @@ export const ModalProvaJuridica: React.FC<ModalProvaJuridicaProps> = ({ termo, o
           >
             {copied ? (
               <>
-                <Check className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="text-emerald-700 font-bold">JSON Copiado!</span>
+                <Check className="w-3.5 h-3.5 text-teal-600" />
+                <span className="text-teal-700 font-bold">JSON Copiado!</span>
               </>
             ) : (
               <>
@@ -227,7 +287,7 @@ export const ModalProvaJuridica: React.FC<ModalProvaJuridicaProps> = ({ termo, o
             <button
               type="button"
               onClick={handlePrint}
-              className="w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-nos-primary hover:bg-nos-dark transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-xl text-xs font-bold text-nos-dark bg-nos-primary hover:bg-nos-primaryHover transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
             >
               <Printer className="w-3.5 h-3.5" />
               <span>Imprimir / Salvar PDF</span>

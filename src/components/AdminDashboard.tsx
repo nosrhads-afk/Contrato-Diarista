@@ -8,7 +8,8 @@ import {
   Users, 
   CalendarCheck, 
   ShieldCheck, 
-  LogOut 
+  LogOut,
+  Paperclip
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import type { TermoAceite } from '../types/database.types';
@@ -93,7 +94,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="bg-nos-primary/10 text-nos-primary text-xs font-bold px-2.5 py-0.5 rounded-full">
+            <span className="bg-teal-50 text-nos-petroleo border border-teal-200 text-xs font-bold px-2.5 py-0.5 rounded-full">
               Painel Restrito
             </span>
             <span className="text-xs text-slate-500 font-medium">Nós RH</span>
@@ -102,7 +103,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             Gestão de Acordos de Diaristas
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            Consulta forense e auditoria de assinaturas eletrônicas
+            Consulta forense, documentos anexados e auditoria de assinaturas eletrônicas
           </p>
         </div>
 
@@ -130,7 +131,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-nos-primary/10 text-nos-primary flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-teal-50 text-nos-petroleo flex items-center justify-center shrink-0">
             <Users className="w-6 h-6" />
           </div>
           <div>
@@ -140,7 +141,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-orange-100 text-nos-accent flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-nos-primary/15 text-nos-dark flex items-center justify-center shrink-0">
             <CalendarCheck className="w-6 h-6" />
           </div>
           <div>
@@ -150,12 +151,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0">
             <ShieldCheck className="w-6 h-6" />
           </div>
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Conformidade Legal</span>
-            <div className="text-sm font-bold text-emerald-700 mt-0.5">100% Auditável</div>
+            <div className="text-sm font-bold text-teal-800 mt-0.5">100% Auditável (LGPD)</div>
           </div>
         </div>
 
@@ -171,7 +172,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             placeholder="Pesquisar instantaneamente por Nome ou CPF..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-nos-primary focus:ring-2 focus:ring-nos-primary/20 transition"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-nos-primary focus:ring-2 focus:ring-nos-primary/30 transition"
           />
         </div>
 
@@ -180,7 +181,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           disabled={isLoading}
           className="px-4 py-2.5 rounded-xl text-xs font-bold border border-slate-300 text-slate-700 hover:bg-slate-50 transition flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-nos-accent' : ''}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin text-nos-primary' : ''}`} />
           <span>Atualizar</span>
         </button>
 
@@ -207,6 +208,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <th className="py-3.5 px-4 sm:px-6">Nome</th>
                 <th className="py-3.5 px-4 sm:px-6">CPF</th>
                 <th className="py-3.5 px-4 sm:px-6">Função</th>
+                <th className="py-3.5 px-4 sm:px-6 text-center">Doc.</th>
                 <th className="py-3.5 px-4 sm:px-6 text-right">Ações</th>
               </tr>
             </thead>
@@ -214,16 +216,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <tbody className="divide-y divide-slate-100 text-slate-700">
               {isLoading ? (
                 <tr>
-                  <td colSpan={5} className="py-12 text-center text-slate-400">
+                  <td colSpan={6} className="py-12 text-center text-slate-400">
                     <div className="flex items-center justify-center gap-2">
-                      <RefreshCw className="w-4 h-4 animate-spin text-nos-accent" />
+                      <RefreshCw className="w-4 h-4 animate-spin text-nos-primary" />
                       <span>Carregando termos assinados...</span>
                     </div>
                   </td>
                 </tr>
               ) : filteredTermos.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="py-12 text-center text-slate-500">
+                  <td colSpan={6} className="py-12 text-center text-slate-500">
                     <FileText className="w-8 h-8 text-slate-300 mx-auto mb-2" />
                     <p className="font-semibold">Nenhum termo encontrado.</p>
                     <p className="text-xs text-slate-400 mt-0.5">
@@ -255,13 +257,27 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       </span>
                     </td>
 
+                    <td className="py-3.5 px-4 sm:px-6 text-center">
+                      {termo.documento_nome ? (
+                        <span 
+                          title={`Documento anexado: ${termo.documento_nome}`}
+                          className="inline-flex items-center gap-1 text-[11px] font-bold text-teal-800 bg-teal-50 border border-teal-200 px-2 py-0.5 rounded"
+                        >
+                          <Paperclip className="w-3 h-3" />
+                          <span>Anexo</span>
+                        </span>
+                      ) : (
+                        <span className="text-[11px] text-slate-400">-</span>
+                      )}
+                    </td>
+
                     <td className="py-3.5 px-4 sm:px-6 text-right whitespace-nowrap">
                       <button
                         onClick={() => setSelectedTermo(termo)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-nos-primary hover:bg-nos-dark transition shadow-sm cursor-pointer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-nos-dark bg-nos-primary hover:bg-nos-primaryHover transition shadow-sm cursor-pointer"
                       >
-                        <Eye className="w-3.5 h-3.5 text-nos-accent" />
-                        <span>Visualizar Prova Jurídica</span>
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>Visualizar Prova</span>
                       </button>
                     </td>
                   </tr>

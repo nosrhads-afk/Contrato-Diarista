@@ -9,7 +9,10 @@ import {
   Smartphone, 
   FileCheck2, 
   Copy, 
-  Check 
+  Check,
+  Paperclip,
+  Share2,
+  ExternalLink
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import type { TermoAceite } from '../types/database.types';
@@ -23,16 +26,15 @@ export const ComprovanteSucesso: React.FC<ComprovanteSucessoProps> = ({ termo, o
   const [copied, setCopied] = React.useState(false);
 
   useEffect(() => {
-    // Efeito de celebração leve e profissional ao carregar o comprovante
     try {
       confetti({
-        particleCount: 50,
-        spread: 60,
+        particleCount: 60,
+        spread: 70,
         origin: { y: 0.6 },
-        colors: ['#F26522', '#133B5C', '#10B981'],
+        colors: ['#3bb3c1', '#233c41', '#346b72', '#10b981'],
       });
     } catch {
-      // Ignora caso canvas não esteja disponível
+      // Ignora erro em ambientes sem canvas
     }
   }, []);
 
@@ -66,29 +68,29 @@ export const ComprovanteSucesso: React.FC<ComprovanteSucessoProps> = ({ termo, o
   return (
     <div className="space-y-6 animate-fadeIn max-w-2xl mx-auto">
       
-      {/* Banner Principal de Sucesso */}
-      <div className="bg-emerald-600 text-white rounded-3xl p-6 sm:p-8 text-center shadow-lg relative overflow-hidden print:bg-white print:text-slate-900 print:shadow-none print:border print:border-slate-300">
+      {/* Banner Principal de Sucesso com Cores Nós RH (Petróleo e Turquesa) */}
+      <div className="bg-nos-dark text-white rounded-3xl p-6 sm:p-8 text-center shadow-lg relative overflow-hidden border border-nos-petroleo print:bg-white print:text-slate-900 print:shadow-none print:border print:border-slate-300">
         <div className="relative z-10 flex flex-col items-center">
-          <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mb-3 shadow-inner">
-            <CheckCircle className="w-10 h-10 text-white print:text-emerald-600" />
+          <div className="w-16 h-16 rounded-full bg-nos-primary/20 border border-nos-primary/40 flex items-center justify-center mb-3 shadow-inner">
+            <CheckCircle className="w-10 h-10 text-nos-primary print:text-teal-600" />
           </div>
 
-          <span className="text-xs font-semibold uppercase tracking-widest bg-white/20 px-3 py-1 rounded-full mb-2">
+          <span className="text-xs font-bold uppercase tracking-widest bg-nos-primary/20 text-teal-300 px-3.5 py-1 rounded-full mb-2 border border-nos-primary/30">
             Acordo Formalizado
           </span>
 
-          <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
             Acordo Assinado com Sucesso!
           </h2>
 
-          <p className="text-sm text-emerald-100 max-w-md mt-2 font-medium print:text-slate-600">
+          <p className="text-sm text-slate-300 max-w-md mt-2 font-medium print:text-slate-600">
             Seu termo de trabalho autônomo foi assinado eletronicamente e registrado com prova jurídica de integridade na Nós RH.
           </p>
         </div>
 
         {/* Círculos decorativos sutis */}
-        <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5 pointer-events-none" />
-        <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-white/5 pointer-events-none" />
+        <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-nos-primary/10 pointer-events-none" />
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full bg-nos-petroleo/20 pointer-events-none" />
       </div>
 
       {/* Cartão do Recibo / Prova Digital */}
@@ -97,7 +99,7 @@ export const ComprovanteSucesso: React.FC<ComprovanteSucessoProps> = ({ termo, o
         {/* Cabeçalho do Recibo */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-nos-accent">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-nos-petroleo">
               Comprovante de Aceite Digital
             </span>
             <h3 className="text-lg font-bold text-nos-dark">
@@ -106,7 +108,7 @@ export const ComprovanteSucesso: React.FC<ComprovanteSucessoProps> = ({ termo, o
           </div>
 
           {/* Selo Digital */}
-          <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl">
+          <div className="flex items-center gap-2 bg-teal-50 border border-teal-200 px-3 py-1.5 rounded-xl">
             <ShieldCheck className="w-4 h-4 text-nos-primary" />
             <span className="text-xs font-bold text-nos-dark">
               Válido para Fins Jurídicos
@@ -128,12 +130,12 @@ export const ComprovanteSucesso: React.FC<ComprovanteSucessoProps> = ({ termo, o
           <button
             type="button"
             onClick={handleCopyCode}
-            className="print:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 transition"
+            className="print:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 transition cursor-pointer"
           >
             {copied ? (
               <>
-                <Check className="w-3.5 h-3.5 text-emerald-600" />
-                <span className="text-emerald-700">Copiado!</span>
+                <Check className="w-3.5 h-3.5 text-teal-600" />
+                <span className="text-teal-700 font-bold">Copiado!</span>
               </>
             ) : (
               <>
@@ -183,10 +185,49 @@ export const ComprovanteSucesso: React.FC<ComprovanteSucessoProps> = ({ termo, o
           </div>
         </div>
 
+        {/* Documento Anexado e Consentimento LGPD */}
+        <div className="p-4 rounded-xl bg-teal-50/60 border border-teal-200 space-y-2.5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Paperclip className="w-4 h-4 text-nos-petroleo shrink-0" />
+              <span className="text-xs font-bold text-nos-dark">
+                Documento Pessoal Anexado:
+              </span>
+            </div>
+            <span className="text-[11px] font-bold text-teal-800 bg-teal-100 px-2 py-0.5 rounded">
+              Recebido
+            </span>
+          </div>
+
+          <div className="text-xs text-slate-700 flex items-center justify-between">
+            <span className="font-medium truncate max-w-[280px]">
+              {termo.documento_nome || 'Documento de Identidade (RG/CPF)'}
+            </span>
+            {termo.documento_url && (
+              <a
+                href={termo.documento_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="print:hidden text-[11px] font-bold text-nos-petroleo hover:text-nos-dark flex items-center gap-1 underline"
+              >
+                <span>Visualizar</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            )}
+          </div>
+
+          <div className="pt-2 border-t border-teal-200/60 flex items-start gap-2 text-[11px] text-slate-600">
+            <Share2 className="w-3.5 h-3.5 text-nos-petroleo shrink-0 mt-0.5" />
+            <span>
+              <strong>Consentimento Registrado:</strong> Autorizado o compartilhamento dos dados e documentos com clientes e parceiros tomadores da Nós RH.
+            </span>
+          </div>
+        </div>
+
         {/* Metadados de Prova Jurídica */}
         <div>
           <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5">
-            <FileCheck2 className="w-4 h-4 text-nos-accent" />
+            <FileCheck2 className="w-4 h-4 text-nos-petroleo" />
             Evidências Digitais e Carimbo Forense
           </h4>
 
@@ -233,9 +274,9 @@ export const ComprovanteSucesso: React.FC<ComprovanteSucessoProps> = ({ termo, o
         <button
           type="button"
           onClick={handlePrint}
-          className="w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-nos-dark hover:bg-nos-primary text-white shadow transition flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-sm bg-nos-dark hover:bg-nos-darkHover text-white shadow-petroleo-glow transition flex items-center justify-center gap-2 cursor-pointer"
         >
-          <Printer className="w-4 h-4" />
+          <Printer className="w-4 h-4 text-nos-primary" />
           <span>Imprimir / Salvar em PDF</span>
         </button>
 

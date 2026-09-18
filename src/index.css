@@ -1,25 +1,30 @@
 @import "tailwindcss";
 
 @theme {
-  --color-nos-dark: #0B2545;
-  --color-nos-primary: #133B5C;
-  --color-nos-accent: #F26522;
-  --color-nos-accentHover: #D95213;
-  --color-nos-light: #F8FAFC;
-  --color-nos-card: #FFFFFF;
-  --color-nos-border: #E2E8F0;
-  --color-nos-muted: #64748B;
-  --color-nos-success: #10B981;
-  --color-nos-danger: #EF4444;
+  /* Paleta Oficial Nós RH (Baseada em nosrh.com) */
+  --color-nos-primary: #3bb3c1;        /* Turquesa Nós RH vibrante */
+  --color-nos-primaryHover: #329da8;   /* Turquesa escurecido para hover */
+  --color-nos-petroleo: #346b72;       /* Petróleo médio corporativo */
+  --color-nos-dark: #233c41;           /* Petróleo escuro profundo */
+  --color-nos-darkHover: #1a2e32;      /* Petróleo quase preto */
+  --color-nos-accent: #3bb3c1;         /* Turquesa destaque */
+  --color-nos-accentHover: #329da8;
+  --color-nos-light: #f8fafc;          /* Slate bem claro para fundo */
+  --color-nos-card: #ffffff;           /* Branco puro para cards */
+  --color-nos-border: #e2e8f0;         /* Bordas sutis */
+  --color-nos-muted: #64748b;          /* Texto secundário */
+  --color-nos-success: #10b981;        /* Verde sucesso */
+  --color-nos-danger: #ef4444;         /* Vermelho alerta */
 
-  --shadow-card: 0 4px 20px -2px rgba(11, 37, 69, 0.08);
-  --shadow-card-hover: 0 10px 30px -4px rgba(11, 37, 69, 0.12);
-  --shadow-orange-glow: 0 4px 20px rgba(242, 101, 34, 0.35);
+  --shadow-card: 0 4px 20px -2px rgba(35, 60, 65, 0.08);
+  --shadow-card-hover: 0 10px 30px -4px rgba(35, 60, 65, 0.12);
+  --shadow-turquesa-glow: 0 4px 20px rgba(59, 179, 193, 0.35);
+  --shadow-petroleo-glow: 0 4px 20px rgba(35, 60, 65, 0.25);
 }
 
 body {
-  background-color: #f1f5f9;
-  color: #0f172a;
+  background-color: #f8fafc;
+  color: #1e293b;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;

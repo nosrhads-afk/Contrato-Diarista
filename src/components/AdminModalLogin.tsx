@@ -19,7 +19,6 @@ export const AdminModalLogin: React.FC<AdminModalLoginProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Senha estática solicitada: "nosrh2026"
     if (password === 'nosrh2026') {
       setError(false);
       setPassword('');
@@ -30,7 +29,7 @@ export const AdminModalLogin: React.FC<AdminModalLoginProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-nos-dark/60 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-nos-dark/75 backdrop-blur-sm animate-fadeIn">
       <div 
         className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-sm w-full p-6 relative"
         role="dialog"
@@ -41,7 +40,7 @@ export const AdminModalLogin: React.FC<AdminModalLoginProps> = ({
         {/* Botão Fechar */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition p-1 rounded-lg"
+          className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition p-1 rounded-lg cursor-pointer"
           aria-label="Fechar"
         >
           <X className="w-5 h-5" />
@@ -49,7 +48,7 @@ export const AdminModalLogin: React.FC<AdminModalLoginProps> = ({
 
         {/* Topo com Ícone */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-nos-primary/10 text-nos-primary flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-teal-50 text-nos-petroleo flex items-center justify-center">
             <Lock className="w-5 h-5" />
           </div>
           <div>
@@ -85,7 +84,7 @@ export const AdminModalLogin: React.FC<AdminModalLoginProps> = ({
                 className={`w-full pl-10 pr-3.5 py-2.5 rounded-xl border text-sm text-slate-900 transition focus:outline-none focus:ring-2 ${
                   error
                     ? 'border-red-400 bg-red-50/40 focus:ring-red-300'
-                    : 'border-slate-300 focus:border-nos-primary focus:ring-nos-primary/20'
+                    : 'border-slate-300 focus:border-nos-primary focus:ring-nos-primary/30'
                 }`}
               />
               <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-3 pointer-events-none" />
@@ -109,7 +108,7 @@ export const AdminModalLogin: React.FC<AdminModalLoginProps> = ({
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl text-xs font-bold text-white bg-nos-primary hover:bg-nos-dark transition cursor-pointer shadow-sm"
+              className="px-5 py-2 rounded-xl text-xs font-bold text-nos-dark bg-nos-primary hover:bg-nos-primaryHover transition cursor-pointer shadow-sm"
             >
               Entrar no Painel
             </button>

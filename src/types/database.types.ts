@@ -11,6 +11,10 @@ export interface TermoAceite {
   termo_versao: string;
   termo_texto_integral: string;
   aceitou_termos: boolean;
+  autoriza_compartilhamento: boolean;
+  documento_url?: string | null;
+  documento_nome?: string | null;
+  documento_tamanho?: number | null;
   codigo_autenticidade: string;
   ip_address: string;
   user_agent: string;

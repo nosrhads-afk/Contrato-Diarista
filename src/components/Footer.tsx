@@ -22,11 +22,11 @@ export const Footer: React.FC<FooterProps> = ({ onOpenAdmin }) => {
           <button
             type="button"
             onClick={onOpenAdmin}
-            className="group flex items-center gap-1.5 text-[11px] text-slate-400 hover:text-slate-600 transition p-1.5 rounded cursor-pointer select-none"
+            className="group flex items-center gap-1.5 text-[11px] text-slate-400 hover:text-nos-petroleo transition p-1.5 rounded cursor-pointer select-none"
             title="Área Administrativa Restrita"
           >
-            <Lock className="w-3 h-3 text-slate-400 group-hover:text-nos-accent transition" />
-            <span className="opacity-80 group-hover:opacity-100">Acesso Restrito</span>
+            <Lock className="w-3 h-3 text-slate-400 group-hover:text-nos-primary transition" />
+            <span className="opacity-80 group-hover:opacity-100 font-medium">Acesso Restrito</span>
           </button>
         </div>
 
